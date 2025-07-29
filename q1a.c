@@ -23,7 +23,6 @@ sem_t full_slots;
 void* producer(void* args) {
     int n = *((int*)args);
     pthread_t tid = pthread_self();
-    
     srand(time(NULL) + tid);
     
     for (int i = 1; i <= n; i++) {
