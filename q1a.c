@@ -17,7 +17,6 @@ int producers_finished = 0;
 pthread_mutex_t buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t finished_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t buffer_full = PTHREAD_COND_INITIALIZER;
-pthread_cond_t data_available = PTHREAD_COND_INITIALIZER;
 sem_t empty_slots;
 sem_t full_slots;
 
