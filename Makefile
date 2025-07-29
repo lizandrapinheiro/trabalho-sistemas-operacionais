@@ -87,28 +87,4 @@ clean-windows:
 # Recompilar tudo do zero (seguro contra binários corrompidos)
 rebuild: clean clean-windows all
 
-# Verificar se arquivos existem
-check:
-	@echo "Verificando arquivos fonte..."
-	@ls -la q1a.c q1g.c q3_1.c q3_2.c q2f_analysis.c 2>/dev/null || echo "❌ Alguns arquivos .c não encontrados"
-	@echo "Verificando executáveis..."
-	@ls -la q1a q1g q2a q2b q2f 2>/dev/null || echo "ℹ️  Execute 'make all' para compilar"
-
-# Ajuda
-help:
-	@echo "Comandos disponíveis:"
-	@echo "  make all        - Compila todos os programas"
-	@echo "  make q1a        - Compila apenas questão 1a"
-	@echo "  make q1g        - Compila apenas questão 1g"
-	@echo "  make q2a        - Compila apenas questão 2a"
-	@echo "  make q2b        - Compila apenas questão 2b"
-	@echo "  make q2f        - Compila apenas questão 2f"
-	@echo "  make test-all   - Executa todos os programas"
-	@echo "  make demo       - Demonstração completa"
-	@echo "  make clean      - Remove executáveis Linux"
-	@echo "  make clean-windows - Remove .exe antigos do Windows"
-	@echo "  make rebuild    - Limpa tudo e recompila corretamente"
-	@echo "  make check      - Verifica arquivos"
-	@echo "  make help       - Mostra esta ajuda"
-
 .PHONY: all test-q1a test-q1g test-q2a test-q2b test-q2f test-all demo clean clean-windows rebuild check help
