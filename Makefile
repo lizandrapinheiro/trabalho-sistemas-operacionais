@@ -25,7 +25,7 @@ q2b: q3_2.c
 q2f: q2f_analysis.c
 	$(CC) $(CFLAGS) $< -o q2f $(LIBS)
 
-# Executar testes individuais - ok
+# Executar testes individuais
 test-q1a: q1a
 	@echo "=== EXECUTANDO QUESTÃO 1A ==="
 	./q1a
