@@ -86,9 +86,6 @@ void* consumer(void* args) {
 
             for (int i = 0; i < BUFFER_SIZE; i++) {
                 sem_post(&empty_slots);
-            }
-            
-            for (int i = 0; i < BUFFER_SIZE; i++) {
                 sem_wait(&full_slots);
             }
         }
