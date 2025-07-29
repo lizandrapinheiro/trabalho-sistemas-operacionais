@@ -1,0 +1,217 @@
+#!/bin/bash
+
+# Script de Demonstração - Trabalho de Sistemas Operacionais
+# Autor: Lizandra Pinheiro
+# Data: 26 de Junho de 2025
+
+clear
+echo "=================================================="
+echo "  DEMONSTRAÇÃO - TRABALHO DE SISTEMAS OPERACIONAIS"
+echo "  Prof. Pedro Botelho - UFC Campus Quixadá"
+echo "=================================================="
+echo
+
+# Função para pausar e continuar
+pause() {
+    echo -e "\n>>> Pressione ENTER para continuar..."
+    read
+    clear
+}
+
+# Compilar todos os programas
+echo "🔨 COMPILANDO TODOS OS PROGRAMAS..."
+echo "-----------------------------------"
+
+echo "Compilando Questão 1a (3 produtores, 1 consumidor)..."
+gcc -Wall -Wextra -std=c99 -O2 q1a.c -o q1a -lpthread
+if [ $? -eq 0 ]; then
+    echo "✅ q1a compilado com sucesso!"
+else
+    echo "❌ Erro na compilação de q1a"
+    exit 1
+fi
+
+echo "Compilando Questão 1g (6 produtores, 2 consumidores)..."
+gcc -Wall -Wextra -std=c99 -O2 q1g.c -o q1g -lpthread
+if [ $? -eq 0 ]; then
+    echo "✅ q1g compilado com sucesso!"
+else
+    echo "❌ Erro na compilação de q1g"
+    exit 1
+fi
+
+echo "Compilando Questão 2a (Leibniz sequencial)..."
+gcc -Wall -Wextra -std=c99 -O2 q3_1.c -o q3_1
+if [ $? -eq 0 ]; then
+    echo "✅ q3_1 compilado com sucesso!"
+else
+    echo "❌ Erro na compilação de q3_1"
+    exit 1
+fi
+
+echo "Compilando Questão 2b (Leibniz paralelo)..."
+gcc -Wall -Wextra -std=c99 -O2 q3_2.c -o q3_2 -lpthread
+if [ $? -eq 0 ]; then
+    echo "✅ q3_2 compilado com sucesso!"
+else
+    echo "❌ Erro na compilação de q3_2"
+    exit 1
+fi
+
+echo "Compilando Questão 2f (Análise de performance)..."
+gcc -Wall -Wextra -std=c99 -O2 q2f_analysis.c -o q2f_analysis -lpthread
+if [ $? -eq 0 ]; then
+    echo "✅ q2f_analysis compilado com sucesso!"
+else
+    echo "❌ Erro na compilação de q2f_analysis"
+    exit 1
+fi
+
+echo -e "\n🎉 TODOS OS PROGRAMAS COMPILADOS COM SUCESSO!"
+pause
+
+# ============================================
+# QUESTÃO 1A - PRODUTOR-CONSUMIDOR BÁSICO
+# ============================================
+echo "📋 QUESTÃO 1A - PRODUTOR-CONSUMIDOR (3P + 1C)"
+echo "=============================================="
+echo "Características:"
+echo "• 3 threads produtoras"
+echo "• 1 thread consumidora"
+echo "• Buffer de 5 posições"
+echo "• Sincronização com mutex + semáforos + condições"
+echo "• Produtores geram valores 1-1000 reais"
+echo "• Consumidor calcula média quando buffer cheio"
+echo
+echo "🚀 EXECUTANDO..."
+echo "----------------"
+
+timeout 30 ./q1a
+
+echo -e "\n✅ Questão 1a finalizada!"
+pause
+
+# ============================================
+# QUESTÃO 1G - PRODUTOR-CONSUMIDOR AVANÇADO
+# ============================================
+echo "📋 QUESTÃO 1G - PRODUTOR-CONSUMIDOR (6P + 2C)"
+echo "=============================================="
+echo "Características:"
+echo "• 6 threads produtoras"
+echo "• 2 threads consumidoras"
+echo "• Mesmo buffer de 5 posições"
+echo "• Competição entre consumidores"
+echo "• Sincronização mais complexa"
+echo
+echo "Desafios adicionais:"
+echo "• pthread_cond_broadcast ao invés de signal"
+echo "• Controle de múltiplos consumidores"
+echo "• Prevenção de condições de corrida"
+echo
+echo "🚀 EXECUTANDO..."
+echo "----------------"
+
+timeout 30 ./q1g
+
+echo -e "\n✅ Questão 1g finalizada!"
+pause
+
+# ============================================
+# QUESTÃO 2A - LEIBNIZ SEQUENCIAL  
+# ============================================
+echo "📊 QUESTÃO 2A - SÉRIE DE LEIBNIZ SEQUENCIAL"
+echo "==========================================="
+echo "Características:"
+echo "• Cálculo de π usando fórmula de Leibniz"
+echo "• 2.000.000.000 termos"
+echo "• Processamento sequencial"
+echo "• Medição de tempo de execução"
+echo
+echo "Fórmula: π = 4 × (1 - 1/3 + 1/5 - 1/7 + 1/9 - ...)"
+echo
+echo "🚀 EXECUTANDO (pode demorar alguns segundos)..."
+echo "-----------------------------------------------"
+
+./q3_1
+
+echo -e "\n✅ Questão 2a finalizada!"
+pause
+
+# ============================================
+# QUESTÃO 2B - LEIBNIZ PARALELO
+# ============================================
+echo "📊 QUESTÃO 2B - SÉRIE DE LEIBNIZ PARALELO"
+echo "========================================="
+echo "Características:"
+echo "• Mesmo cálculo, mas com 16 threads"
+echo "• Divisão do trabalho: $(echo "2000000000/16" | bc) termos por thread"
+echo "• Sincronização com mutex"
+echo "• Medição individual de cada thread"
+echo "• Cálculo de speedup e eficiência"
+echo
+echo "🚀 EXECUTANDO..."
+echo "----------------"
+
+./q3_2
+
+echo -e "\n✅ Questão 2b finalizada!"
+pause
+
+# ============================================
+# QUESTÃO 2F - ANÁLISE DE PERFORMANCE
+# ============================================
+echo "📈 QUESTÃO 2F - ANÁLISE DE PERFORMANCE"
+echo "======================================"
+echo "Características:"
+echo "• Teste com diferentes números de threads"
+echo "• Comparação: 2, 4, 8, 16, 32, 64, 128 threads"
+echo "• Análise de speedup e eficiência"
+echo "• Identificação do ponto ótimo"
+echo
+echo "Métricas avaliadas:"
+echo "• Tempo de execução"
+echo "• Speedup = Tempo_sequencial / Tempo_paralelo"
+echo "• Eficiência = Speedup / Número_threads × 100%"
+echo
+echo "🚀 EXECUTANDO ANÁLISE COMPLETA..."
+echo "--------------------------------"
+
+./q2f_analysis
+
+echo -e "\n✅ Análise completa finalizada!"
+pause
+
+# ============================================
+# RESUMO E CONCLUSÕES
+# ============================================
+echo "📋 RESUMO DOS RESULTADOS"
+echo "========================"
+echo
+echo "🔹 QUESTÃO 1 - PRODUTOR-CONSUMIDOR:"
+echo "   ✓ Implementação correta com sincronização"
+echo "   ✓ Tratamento de múltiplos produtores/consumidores"
+echo "   ✓ Uso adequado de mutex, semáforos e condições"
+echo
+echo "🔹 QUESTÃO 2 - PARALELIZAÇÃO:"
+echo "   ✓ Speedup significativo com paralelização"
+echo "   ✓ Ponto ótimo próximo ao número de cores do sistema"
+echo "   ✓ Degradação com excesso de threads (overhead)"
+echo
+echo "🎓 CONCEITOS DEMONSTRADOS:"
+echo "   • Sincronização de threads"
+echo "   • Problemas clássicos (Produtor-Consumidor)"
+echo "   • Análise de performance paralela"
+echo "   • Trade-offs entre paralelização e overhead"
+echo
+echo "📊 INFORMAÇÕES DO SISTEMA:"
+echo "   • Cores disponíveis: $(nproc)"
+echo "   • Compilador: $(gcc --version | head -n1)"
+echo "   • Data da execução: $(date)"
+echo
+echo "=================================================="
+echo "        DEMONSTRAÇÃO CONCLUÍDA COM SUCESSO!"
+echo "=================================================="
+echo
+echo "Obrigado pela atenção, Professor Pedro Botelho!"
+echo
+

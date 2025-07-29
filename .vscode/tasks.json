@@ -1,0 +1,221 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar e Executar Q1a",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall", "-Wextra", "-std=c99", "-O2",
+                "${file}",
+                "-o", "${fileDirname}/${fileBasenameNoExtension}",
+                "-lpthread"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Compila e prepara para executar questão 1a"
+        },
+        {
+            "label": "Executar Q1a",
+            "type": "shell",
+            "command": "./q1a",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Compilar e Executar Q1a"
+        },
+        {
+            "label": "Compilar e Executar Q1g",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall", "-Wextra", "-std=c99", "-O2",
+                "q1g.c",
+                "-o", "q1g",
+                "-lpthread"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Executar Q1g",
+            "type": "shell",
+            "command": "./q1g",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Compilar e Executar Q1g"
+        },
+        {
+            "label": "Compilar e Executar Q2a",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall", "-Wextra", "-std=c99", "-O2",
+                "q3_1.c",
+                "-o", "q3_1"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Executar Q2a",
+            "type": "shell",
+            "command": "./q3_1",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Compilar e Executar Q2a"
+        },
+        {
+            "label": "Compilar e Executar Q2b",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall", "-Wextra", "-std=c99", "-O2",
+                "q3_2.c",
+                "-o", "q3_2",
+                "-lpthread"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Executar Q2b",
+            "type": "shell",
+            "command": "./q3_2",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Compilar e Executar Q2b"
+        },
+        {
+            "label": "Executar Análise Completa Q2f",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall", "-Wextra", "-std=c99", "-O2",
+                "q2f_analysis.c",
+                "-o", "q2f_analysis",
+                "-lpthread",
+                "&&", "./q2f_analysis"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Demonstração Completa",
+            "type": "shell",
+            "command": "echo",
+            "args": [
+                "\"=== INICIANDO DEMONSTRAÇÃO ===\""
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Executar Q1a",
+                "Executar Q1g", 
+                "Executar Q2a",
+                "Executar Q2b",
+                "Executar Análise Completa Q2f"
+            ]
+        },
+        {
+            "label": "Limpar Executáveis",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-f", "q1a", "q1g", "q3_1", "q3_2", "q2f_analysis"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}
