@@ -6,15 +6,13 @@
 #include <time.h>
 
 #define BUFFER_SIZE 5
-#define NUM_PRODUCERS 3  //Apenas 3 produtores
+#define NUM_PRODUCERS 3
 
-// Buffer compartilhado e variáveis globais
 int buffer[BUFFER_SIZE];
 int buffer_index = 0;
 int producers_finished = 0;
 //Não existe 'consumers_finished'
 
-// Sincronização
 pthread_mutex_t buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t finished_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t buffer_full = PTHREAD_COND_INITIALIZER;
@@ -124,7 +122,6 @@ int main(void) {
     }
     pthread_join(consumer_thread, NULL);  // Join de 1 thread apenas
     
-    // Limpar recursos
     sem_destroy(&empty_slots);
     sem_destroy(&full_slots);
     pthread_mutex_destroy(&buffer_mutex);
