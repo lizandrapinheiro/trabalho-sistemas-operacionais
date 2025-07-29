@@ -1,0 +1,17 @@
+# Arquivos executáveis
+q1a
+q1g
+q3_1
+q3_2
+q2f_analysis
+
+# Arquivos temporários
+*.o
+*.tmp
+*~
+
+# Arquivos do VS Code específicos da máquina
+.vscode/settings.json
+.vscode/launch.json
+
+
