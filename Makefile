@@ -56,23 +56,23 @@ demo: all
 	@echo "  Prof. Pedro Botelho - UFC Campus Quixadá"
 	@echo "=================================================="
 	@echo
-	@echo "🔨 Questão 1a - Produtor-Consumidor (3P+1C)"
+	@echo "Questão 1a - Produtor-Consumidor (3P+1C)"
 	@echo "--------------------------------------------"
 	timeout 15 ./q1a || true
 	@echo
-	@echo "🔨 Questão 1g - Produtor-Consumidor (6P+2C)"
+	@echo "Questão 1g - Produtor-Consumidor (6P+2C)"
 	@echo "--------------------------------------------"
 	timeout 15 ./q1g || true
 	@echo
-	@echo "📊 Questão 2a - Leibniz Sequencial"
+	@echo "Questão 2a - Leibniz Sequencial"
 	@echo "-----------------------------------"
 	./q2a
 	@echo
-	@echo "📊 Questão 2b - Leibniz Paralelo"
+	@echo "Questão 2b - Leibniz Paralelo"
 	@echo "---------------------------------"
 	./q2b
 	@echo
-	@echo "📈 Questão 2f - Análise Performance"
+	@echo "Questão 2f - Análise Performance"
 	@echo "------------------------------------"
 	./q2f
 
