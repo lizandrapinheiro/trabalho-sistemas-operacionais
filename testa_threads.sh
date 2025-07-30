@@ -92,11 +92,6 @@ run_tests() {
     done
     
     echo ""
-    print_colored $GREEN "MELHOR RESULTADO:"
-    print_colored $GREEN "   → $best_threads threads: ${best_time}s"
-    
-    local theoretical_speedup=$(echo "scale=2; $sequential_time / $best_time" | bc -l)
-    print_colored $YELLOW "Speedup teórico máximo: ${theoretical_speedup}x"
     
     echo "=== RESUMO ==="
     echo "Melhor configuração: $best_threads threads (${best_time}s)"
