@@ -73,6 +73,7 @@ double runSequentialTest() {
     return elapsed_time;
 }
 
+
 double runParallelTest(int num_threads, double sequential_time) {
     printf("\n=== TESTE PARALELO COM %d THREADS ===\n", num_threads);
     
@@ -141,10 +142,8 @@ void runCompleteAnalysis() {
     printf("=== ANÁLISE COMPLETA DE PERFORMANCE - SÉRIE DE LEIBNIZ ===\n");
     printf("Número de termos: %d\n", NUM_TERMS);
     
-    // Teste sequencial
     double sequential_time = runSequentialTest();
     
-    // Testes paralelos com diferentes números de threads
     int thread_counts[] = {2, 4, 8, 16, 32, 64, 128};
     int num_tests = sizeof(thread_counts) / sizeof(thread_counts[0]);
     
@@ -155,7 +154,7 @@ void runCompleteAnalysis() {
            sequential_time, M_PI);
     
     for (int i = 0; i < num_tests; i++) {
-        global_sum = 0.0; // Reset para cada teste
+        global_sum = 0.0;
         
         pthread_t* threads = malloc(thread_counts[i] * sizeof(pthread_t));
         thread_data* thread_data_array = malloc(thread_counts[i] * sizeof(thread_data));
@@ -165,7 +164,6 @@ void runCompleteAnalysis() {
         
         clock_t process_start = clock();
         
-        // Criar threads silenciosamente para o resumo
         for (int j = 0; j < thread_counts[i]; j++) {
             thread_data_array[j].first_term = j * partial_num_terms;
             thread_data_array[j].partial_num_terms = partial_num_terms;
@@ -200,36 +198,22 @@ void runCompleteAnalysis() {
         free(threads);
         free(thread_data_array);
     }
-    
-    printf("\n=== ANÁLISE TÉCNICA ===\n");
-    printf("• O speedup melhora até um certo ponto, depois se estabiliza ou piora\n");
-    printf("• Fatores que limitam a performance:\n");
-    printf("  - Overhead de criação e sincronização de threads\n");
-    printf("  - Limitações do hardware (número de cores)\n");
-    printf("  - Contenção no mutex para acessar global_sum\n");
-    printf("  - Cache misses e falso compartilhamento\n");
-    printf("• O ponto ótimo geralmente está próximo ao número de cores do processador\n");
-    printf("• Após esse ponto, threads adicionais só aumentam o overhead\n");
-    printf("• Speedup vs Sequencial: comparação com execução em 1 thread\n");
-    printf("• Speedup vs Threads: eficiência real considerando tempo total das threads\n");
 }
 
 int main(int argc, char* argv[]) {
     if (argc == 1) {
-        // Modo análise completa
+
         runCompleteAnalysis();
     } else if (argc == 2) {
-        // Modo teste individual
+
         int NUM_THREADS = atoi(argv[1]);
         if (NUM_THREADS <= 0) {
             fprintf(stderr, "Número de threads inválido. Deve ser positivo.\n");
             return 1;
         }
         
-        // Primeiro roda teste sequencial para comparação
         double sequential_time = runSequentialTest();
-        
-        // Depois roda teste paralelo
+
         runParallelTest(NUM_THREADS, sequential_time);
     } else {
         fprintf(stderr, "Uso:\n");
