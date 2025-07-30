@@ -1,13 +1,10 @@
 #!/bin/bash
 
 # Script para testar performance da série de Leibniz paralela
-# Autor: [Seu Nome]
-# Data: $(date +%Y-%m-%d)
 
 # Configurações
 PROGRAM_NAME="leibniz_paralelo"
 SOURCE_FILE="q3_2.c"
-LOG_FILE="resultados_$(date +%Y%m%d_%H%M%S).log"
 
 # Cores para output
 RED='\033[0;31m'
@@ -45,16 +42,13 @@ compile_program() {
 # Função principal de teste
 run_tests() {
     local thread_counts=($@)
-    local results=()
     
-    echo "TESTES DE PERFORMANCE - SÉRIE DE LEIBNIZ" | tee -a $LOG_FILE
-    echo "=============================================" | tee -a $LOG_FILE
+    echo "TESTES DE PERFORMANCE - SÉRIE DE LEIBNIZ"
+    echo "============================================="
     
-    # Cabeçalho da tabela
-    printf "%-8s | %-10s | %-8s | %-10s | %-8s\n" "Threads" "Tempo(s)" "Speedup" "Efic.(%)" "Pi" | tee -a $LOG_FILE
-    printf "%.8s-+-%.10s-+-%.8s-+-%.10s-+-%.8s\n" "--------" "----------" "--------" "----------" "--------" | tee -a $LOG_FILE
+    printf "%-8s | %-10s | %-8s | %-10s | %-8s\n" "Threads" "Tempo(s)" "Speedup" "Efic.(%)" "Pi"
+    printf "%.8s-+-%.10s-+-%.8s-+-%.10s-+-%.8s\n" "--------" "----------" "--------" "----------" "--------"
     
-    # Variáveis para análise
     local best_time=999999
     local best_threads=1
     local sequential_time=""
@@ -62,10 +56,8 @@ run_tests() {
     for threads in "${thread_counts[@]}"
     do
         print_colored $BLUE "Executando com $threads threads..."
-        echo "" | tee -a $LOG_FILE
-        echo "=== TESTE COM $threads THREADS ===" | tee -a $LOG_FILE
+        echo "=== TESTE COM $threads THREADS ==="
         
-        # Captura a saída do programa
         local output=$(timeout 300 ./$PROGRAM_NAME $threads 2>&1)
         local exit_code=$?
         
@@ -77,54 +69,39 @@ run_tests() {
             continue
         fi
         
-        # Mostra output completo na tela (incluindo TIDs)
-        echo "$output" | tee -a $LOG_FILE
+        echo "$output"
         
-        # Extrai métricas do output
         local process_time=$(echo "$output" | grep "Total Processo" | awk '{print $4}')
         local speedup=$(echo "$output" | grep "Speedup:" | awk '{print $2}' | sed 's/x//')
         local efficiency=$(echo "$output" | grep "Eficiência:" | awk '{print $2}' | sed 's/%//')
         local pi_value=$(echo "$output" | grep "π calculado:" | awk '{print $4}')
         
-        # Extrai informações dos TIDs para análise
-        local tid_info=$(echo "$output" | grep "TID:" | sort -k3 -n)
-        local min_time=$(echo "$tid_info" | awk '{print $3}' | sort -n | head -1)
-        local max_time=$(echo "$tid_info" | awk '{print $3}' | sort -n | tail -1)
-        local avg_time=$(echo "$tid_info" | awk '{sum+=$3; count++} END {if(count>0) print sum/count; else print 0}')
-        
-        # Armazena tempo sequencial (primeira execução)
         if [ -z "$sequential_time" ]; then
             sequential_time=$process_time
         fi
         
-        # Verifica se é o melhor tempo
         if (( $(echo "$process_time < $best_time" | bc -l) )); then
             best_time=$process_time
             best_threads=$threads
         fi
         
-        # Imprime resultado formatado na tabela resumo
         printf "%-8s | %-10s | %-8s | %-10s | %-8s\n" "$threads" "$process_time" "$speedup" "$efficiency" "$pi_value"
+        echo "----------------------------------------"
         
-        echo "----------------------------------------" | tee -a $LOG_FILE
-        
-        # Pausa entre testes para esfriar o processador
         sleep 2
     done
     
-    # Análise final
-    echo "" | tee -a $LOG_FILE
+    echo ""
     print_colored $GREEN "MELHOR RESULTADO:"
     print_colored $GREEN "   → $best_threads threads: ${best_time}s"
     
     local theoretical_speedup=$(echo "scale=2; $sequential_time / $best_time" | bc -l)
     print_colored $YELLOW "Speedup teórico máximo: ${theoretical_speedup}x"
     
-    echo "=== RESUMO ===" | tee -a $LOG_FILE
-    echo "Melhor configuração: $best_threads threads (${best_time}s)" | tee -a $LOG_FILE
-    echo "Speedup máximo: ${theoretical_speedup}x" | tee -a $LOG_FILE
+    echo "=== RESUMO ==="
+    echo "Melhor configuração: $best_threads threads (${best_time}s)"
+    echo "Speedup máximo: ${theoretical_speedup}x"
 }
-
 
 # Processamento de argumentos
 FORCE_COMPILE=false
@@ -133,10 +110,6 @@ CUSTOM_THREADS=()
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        -h|--help)
-            show_help
-            exit 0
-            ;;
         -c|--compile)
             FORCE_COMPILE=true
             shift
@@ -155,18 +128,13 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             print_colored $RED "Opção desconhecida: $1"
-            show_help
             exit 1
             ;;
     esac
 done
 
-# Main
 print_colored $GREEN "TESTADOR DE PERFORMANCE - SÉRIE DE LEIBNIZ PARALELA"
 echo "======================================================"
-
-# Informações do sistema
-system_info
 
 # Compilação
 if [ "$FORCE_COMPILE" = true ] || [ ! -f "$PROGRAM_NAME" ]; then
