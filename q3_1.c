@@ -12,18 +12,15 @@ int main(void) {
     printf("Calculando série de Leibniz sequencialmente...\n");
     printf("Número de termos: %d\n\n", NUM_TERMS);
     
-    // Calcular a série de Leibniz
     for (long long k = 0; k < NUM_TERMS; k++) {
         pi_approximation += signal / (2 * k + 1);
         signal *= -1.0;
         
-        // Mostrar progresso a cada 100 milhões de termos
         if (k % 100000000 == 0 && k > 0) {
             printf("Progresso: %lld/%d termos processados\n", k, NUM_TERMS);
         }
     }
     
-    // Multiplicar por 4 para obter pi
     pi_approximation *= 4.0;
     
     clock_t end_time = clock();
