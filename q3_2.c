@@ -4,19 +4,18 @@
 #include <time.h>
 
 #define NUM_TERMS 2000000000
-#define NUM_THREADS 16
-#define PARTIAL_NUM_TERMS ((NUM_TERMS) / (NUM_THREADS))
 
 double global_sum = 0.0;
 pthread_mutex_t sum_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct {
     int first_term;
+    int partial_terms;
     double execution_time;
 } thread_data;
 
-double partialFormula(int first_term) {
-    const long long num_terms = first_term + PARTIAL_NUM_TERMS;
+double partialFormula(int first_term, int partial_terms) {
+    const long long num_terms = first_term + partial_terms;
     
     double pi_approximation = 0.0;
     double signal = (first_term % 2 == 0) ? 1.0 : -1.0;
@@ -32,11 +31,12 @@ double partialFormula(int first_term) {
 void* partialProcessing(void* args) {
     thread_data* data = (thread_data*)args;
     int first_term = data->first_term;
+    int partial_terms = data->partial_terms;
     pthread_t tid = pthread_self();
     
     clock_t start_time = clock();
     
-    double partial_sum = partialFormula(first_term);
+    double partial_sum = partialFormula(first_term, partial_terms);
     
     pthread_mutex_lock(&sum_mutex);
     global_sum += partial_sum;
@@ -51,9 +51,22 @@ void* partialProcessing(void* args) {
     return NULL;
 }
 
-int main(void) {
-    pthread_t threads[NUM_THREADS];
-    thread_data thread_data_array[NUM_THREADS];
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s <número_de_threads>\n", argv[0]);
+        return 1;
+    }
+
+    int NUM_THREADS = atoi(argv[1]);
+    if (NUM_THREADS <= 0 || NUM_TERMS % NUM_THREADS != 0) {
+        fprintf(stderr, "Número de threads inválido. Deve ser positivo e divisor de %d.\n", NUM_TERMS);
+        return 1;
+    }
+
+    int PARTIAL_NUM_TERMS = NUM_TERMS / NUM_THREADS;
+
+    pthread_t* threads = malloc(sizeof(pthread_t) * NUM_THREADS);
+    thread_data* thread_data_array = malloc(sizeof(thread_data) * NUM_THREADS);
     
     printf("Calculando série de Leibniz com %d threads...\n", NUM_THREADS);
     printf("Número de termos: %d\n", NUM_TERMS);
@@ -63,6 +76,7 @@ int main(void) {
     
     for (int i = 0; i < NUM_THREADS; i++) {
         thread_data_array[i].first_term = i * PARTIAL_NUM_TERMS;
+        thread_data_array[i].partial_terms = PARTIAL_NUM_TERMS;
         pthread_create(&threads[i], NULL, partialProcessing, &thread_data_array[i]);
     }
     
@@ -88,6 +102,8 @@ int main(void) {
     printf("Speedup: %.2fx\n", total_thread_time / process_time);
     printf("Eficiência: %.2f%%\n", (total_thread_time / process_time) / NUM_THREADS * 100);
     
+    free(threads);
+    free(thread_data_array);
     pthread_mutex_destroy(&sum_mutex);
     
     return 0;

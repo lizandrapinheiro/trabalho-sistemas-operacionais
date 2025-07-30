@@ -13,5 +13,3 @@ q2f_analysis
 # Arquivos do VS Code específicos da máquina
 .vscode/settings.json
 .vscode/launch.json
-
-
